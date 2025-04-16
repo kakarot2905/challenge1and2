@@ -1,14 +1,13 @@
-// API endpoints
+
 const API_URL = 'http://localhost:3000';
 
-// DOM Elements
 const loginSection = document.getElementById('loginSection');
 const dashboardSection = document.getElementById('dashboardSection');
 const loginForm = document.getElementById('loginForm');
 const logoutBtn = document.getElementById('logoutBtn');
 const companiesList = document.getElementById('companiesList');
 
-// Event Listeners
+
 loginForm.addEventListener('submit', handleLogin);
 logoutBtn.addEventListener('click', handleLogout);
 

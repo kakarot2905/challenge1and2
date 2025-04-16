@@ -45,15 +45,11 @@ function createWidget(data) {
 
 // Function to find a suitable injection point on LinkedIn
 function findInjectionPoint() {
-  // Try multiple selectors to find a suitable injection point
   const selectors = [
-    // Original specific selector
     "#profile-content > div > div.scaffold-layout.scaffold-layout--breakpoint-lg.scaffold-layout--main-aside.scaffold-layout--reflow.pv-profile.pvs-loader-wrapper__shimmer--animate > div > div > main > section.artdeco-card.mXyfPxnkcDxpGQgOCLwKVWnyhNheVdOgbrtjE > div.ph5",
-    // More general selectors
     "main section.artdeco-card",
     "main section.ph5",
     "main > section",
-    // Last resort - any section in the main content
     "main"
   ];
 
@@ -71,13 +67,10 @@ function findInjectionPoint() {
 
 // Function to inject the widget into the LinkedIn profile section
 function injectWidget() {
-  // Find a suitable injection point
   const targetSection = findInjectionPoint();
 
   if (targetSection) {
-    // Check if widget already exists to prevent duplicates
     if (!document.querySelector('.linkedin-enhancer-widget')) {
-      // Create and inject the widget
       const widget = createWidget(sampleData);
       targetSection.appendChild(widget);
       console.log("Widget injected successfully");
@@ -95,35 +88,27 @@ injectWidget();
 
 // Set up a MutationObserver to detect when the profile content loads
 const observer = new MutationObserver((mutations, obs) => {
-  // Try to find a suitable injection point
   const targetSection = findInjectionPoint();
 
   if (targetSection) {
-    // If we found the target section and no widget exists, inject it
     if (!document.querySelector('.linkedin-enhancer-widget')) {
       console.log("Target section found, injecting widget");
       injectWidget();
     }
-
-    // Once we've found and injected, we can stop observing
     obs.disconnect();
   }
 });
 
-// Start observing the document with the configured parameters
 observer.observe(document.body, { childList: true, subtree: true });
 
 // Listen for messages from popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'toggleWidget') {
-    // Get all widgets and toggle them all
     const widgets = document.querySelectorAll('.linkedin-enhancer-widget');
     if (widgets.length > 0) {
-      // Check the display state of the first widget to determine the new state
       const firstWidget = widgets[0];
       const newState = firstWidget.style.display === 'none' ? 'block' : 'none';
 
-      // Apply the same state to all widgets
       widgets.forEach(widget => {
         widget.style.display = newState;
       });
